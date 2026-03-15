@@ -1,5 +1,6 @@
 package com.app.Library_Management.mapper;
 
+import com.app.Library_Management.domain.UserRole;
 import com.app.Library_Management.model.User;
 import com.app.Library_Management.payload.dto.UserDTO;
 import org.springframework.stereotype.Service;
@@ -51,7 +52,7 @@ public class UserMapper {
                 .password(userDTO.getPassword())
                 .phoneNumber(userDTO.getPhoneNumber())
                 .fullName(userDTO.getFullName())
-                .role(userDTO.getRole())
+                .role(String.valueOf(UserRole.ROLE_USER))
                 .lastLogin(userDTO.getLastLogin())
                 .createdAt(userDTO.getCreatedAt())
                 .updatedAt(userDTO.getUpdatedAt())
