@@ -3,6 +3,7 @@ package com.app.Library_Management.exception;
 import com.app.Library_Management.payload.response.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -46,6 +47,22 @@ public class GlobalException {
     }
     @ExceptionHandler(BookAlreadyExistException.class)
     public ResponseEntity<ApiResponse> handleBookAlreadyExist(BookAlreadyExistException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(e.getMessage(), false));
+    }
+    @ExceptionHandler(UserAlreadyExistException.class)
+    public ResponseEntity<ApiResponse> handleUserAlreadyExist(UserAlreadyExistException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(e.getMessage(), false));
+    }
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ApiResponse> handleUserNotFound(UserNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(e.getMessage(), false));
+    }
+    @ExceptionHandler(PasswordDoesNotMatchExp.class)
+    public ResponseEntity<ApiResponse> handlePasswordDoesNotMatchExp(PasswordDoesNotMatchExp e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(e.getMessage(), false));
+    }
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ApiResponse> handleBadCredentialsException(BadCredentialsException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(e.getMessage(), false));
     }
 }
