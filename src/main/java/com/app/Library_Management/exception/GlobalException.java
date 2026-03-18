@@ -63,6 +63,14 @@ public class GlobalException {
     }
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ApiResponse> handleBadCredentialsException(BadCredentialsException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse("Bad Credentials or Login Expired !", false));
+    }
+    @ExceptionHandler(PlanCodeAlreadyExist.class)
+    public ResponseEntity<ApiResponse> handlePlanCodeAlreadyExist(PlanCodeAlreadyExist e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(e.getMessage(), false));
+    }
+    @ExceptionHandler(PlanNotFound.class)
+    public ResponseEntity<ApiResponse> handlePlanNotFound(PlanNotFound e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(e.getMessage(), false));
     }
 }

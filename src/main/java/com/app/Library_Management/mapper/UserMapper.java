@@ -5,6 +5,9 @@ import com.app.Library_Management.model.User;
 import com.app.Library_Management.payload.dto.UserDTO;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * Mapper for converting between User entity and UserDTO
  * Provides bidirectional mapping for API requests/responses
@@ -102,5 +105,14 @@ public class UserMapper {
         }
 
         return user;
+    }
+
+    public static List<UserDTO> toDTOList(List<User> users) {
+        if (users == null) {
+            return null;
+        }
+        return users.stream()
+                .map(UserMapper::toDTOWithoutPassword)
+                .collect(Collectors.toList());
     }
 }

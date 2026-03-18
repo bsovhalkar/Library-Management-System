@@ -2,12 +2,14 @@ package com.app.Library_Management.mapper;
 
 import com.app.Library_Management.model.SubscriptionPlan;
 import com.app.Library_Management.payload.dto.SubscriptionPlanDTO;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+//@Component
 public class SubscriptionPlanMapper {
 
     public static SubscriptionPlanDTO toDTO(SubscriptionPlan subscriptionPlan) {
@@ -80,6 +82,55 @@ public class SubscriptionPlanMapper {
         return subscriptionPlanDTOs.stream()
                 .map(SubscriptionPlanMapper::toEntity)
                 .collect(Collectors.toList());
+    }
+
+    public static SubscriptionPlan updateEntityFromDTO(SubscriptionPlanDTO subscriptionPlanDTO, SubscriptionPlan subscriptionPlan) {
+        if (subscriptionPlanDTO == null || subscriptionPlan == null) {
+            return subscriptionPlan;
+        }
+
+        if (subscriptionPlanDTO.getPlanCode() != null) {
+            subscriptionPlan.setPlanCode(subscriptionPlanDTO.getPlanCode());
+        }
+        if (subscriptionPlanDTO.getPlanName() != null) {
+            subscriptionPlan.setPlanName(subscriptionPlanDTO.getPlanName());
+        }
+        if (subscriptionPlanDTO.getPlanDescription() != null) {
+            subscriptionPlan.setPlanDescription(subscriptionPlanDTO.getPlanDescription());
+        }
+        if (subscriptionPlanDTO.getDurationInDays() != null) {
+            subscriptionPlan.setDurationInDays(subscriptionPlanDTO.getDurationInDays());
+        }
+        if (subscriptionPlanDTO.getPrice() != null) {
+            subscriptionPlan.setPrice(subscriptionPlanDTO.getPrice());
+        }
+        if (subscriptionPlanDTO.getCurrency() != null) {
+            subscriptionPlan.setCurrency(subscriptionPlanDTO.getCurrency());
+        }
+        if (subscriptionPlanDTO.getMaxBooksAllowed() != null) {
+            subscriptionPlan.setMaxBooksAllowed(subscriptionPlanDTO.getMaxBooksAllowed());
+        }
+        if (subscriptionPlanDTO.getMaxDaysPerBook() != null) {
+            subscriptionPlan.setMaxDaysPerBook(subscriptionPlanDTO.getMaxDaysPerBook());
+        }
+        if (subscriptionPlanDTO.getDisplayOrder() != null) {
+            subscriptionPlan.setDisplayOrder(subscriptionPlanDTO.getDisplayOrder());
+        }
+        if (subscriptionPlanDTO.getActive() != null) {
+            subscriptionPlan.setActive(subscriptionPlanDTO.getActive());
+        }
+        if (subscriptionPlanDTO.getIsFeatured() != null) {
+            subscriptionPlan.setIsFeatured(subscriptionPlanDTO.getIsFeatured());
+        }
+        if (subscriptionPlanDTO.getBadgeText() != null) {
+            subscriptionPlan.setBadgeText(subscriptionPlanDTO.getBadgeText());
+        }
+        if (subscriptionPlanDTO.getAdminNotes() != null) {
+            subscriptionPlan.setAdminNotes(subscriptionPlanDTO.getAdminNotes());
+        }
+
+
+        return subscriptionPlan;
     }
 }
 
