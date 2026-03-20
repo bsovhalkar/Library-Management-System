@@ -17,12 +17,13 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-//@AllArgsConstructor
 public class GenreServiceImp implements GenreService {
-    private  final GenreRepository genreRepository;
+    private final GenreRepository genreRepository;
+    private final GenreMapper genreMapper;
+    
     @Override
     public GenreDTO createGenre(GenreDTO dto) {
-        Genre genre = GenreMapper.toGenreEntity(dto);
+        Genre genre = genreMapper.toGenreEntity(dto);
 
         if (dto.getParentGenreId() != null) {
             Genre parent = genreRepository.findById(dto.getParentGenreId())
@@ -39,7 +40,7 @@ public class GenreServiceImp implements GenreService {
 
         Genre savedGenre = genreRepository.save(genre);
 
-        return GenreMapper.toGenreDTO(savedGenre);
+        return genreMapper.toGenreDTO(savedGenre);
 
     }
 
@@ -50,7 +51,7 @@ public class GenreServiceImp implements GenreService {
         Genre genreToUpdate = genreRepository.findById(id)
                 .orElseThrow(() -> new GenreNotFoundException("Genre with id " + id + " not found"));
 
-        Genre updatedGenre = GenreMapper.updateEntityFromDTO(dto, genreToUpdate);
+        Genre updatedGenre = genreMapper.updateEntityFromDTO(dto, genreToUpdate);
 
         if (dto.getParentGenreId() != null) {
             if (dto.getParentGenreId().equals(id)) {
@@ -65,7 +66,7 @@ public class GenreServiceImp implements GenreService {
 
         genreRepository.save(updatedGenre);
 
-        return GenreMapper.toGenreDTO(updatedGenre);
+        return genreMapper.toGenreDTO(updatedGenre);
     }
 
     @Override
@@ -80,14 +81,14 @@ public class GenreServiceImp implements GenreService {
 
         return genreRepository.findAll()
                 .stream()
-                .map(GenreMapper::toGenreDTO)
+                .map(genreMapper::toGenreDTO)
                 .toList();
     }
 
     @Override
     public GenreDTO getGenreById(Long id) throws  GenreNotFoundException {
         Genre genre = genreRepository.findById(id).orElseThrow(() -> new GenreNotFoundException("Genre with id "+ id +" not found"));
-        return GenreMapper.toGenreDTO(genre);
+        return genreMapper.toGenreDTO(genre);
     }
 
     @Transactional
@@ -101,7 +102,7 @@ public class GenreServiceImp implements GenreService {
     public List<GenreDTO> getAllActiveGenresWithSubGenres(Long parentGenreId) throws ParentNotFoundException {
         return genreRepository.findByParentGenreIdAndActiveTrueOrderByDisplayOrderAsc(parentGenreId)
                 .stream()
-                .map(GenreMapper::toGenreDTO)
+                .map(genreMapper::toGenreDTO)
                 .toList();
     }
 
@@ -111,7 +112,7 @@ public class GenreServiceImp implements GenreService {
         return genreRepository
                 .findByParentGenreIsNullAndActiveTrueOrderByDisplayOrderAsc()
                 .stream()
-                .map(GenreMapper::toGenreDTO)
+                .map(genreMapper::toGenreDTO)
                 .toList();
     }
 

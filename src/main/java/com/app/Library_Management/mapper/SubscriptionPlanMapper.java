@@ -3,16 +3,14 @@ package com.app.Library_Management.mapper;
 import com.app.Library_Management.model.SubscriptionPlan;
 import com.app.Library_Management.payload.dto.SubscriptionPlanDTO;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
-//@Component
+@Component
 public class SubscriptionPlanMapper {
 
-    public static SubscriptionPlanDTO toDTO(SubscriptionPlan subscriptionPlan) {
+    public SubscriptionPlanDTO toDTO(SubscriptionPlan subscriptionPlan) {
         if (subscriptionPlan == null) {
             return null;
         }
@@ -39,7 +37,29 @@ public class SubscriptionPlanMapper {
         );
     }
 
-    public static SubscriptionPlan toEntity(SubscriptionPlanDTO subscriptionPlanDTO) {
+    public SubscriptionPlan toEntity(SubscriptionPlanDTO subscriptionPlanDTO) {
+        if (subscriptionPlanDTO == null) {
+            return null;
+        }
+
+        return SubscriptionPlan.builder()
+                .planCode(subscriptionPlanDTO.getPlanCode())
+                .planName(subscriptionPlanDTO.getPlanName())
+                .planDescription(subscriptionPlanDTO.getPlanDescription())
+                .durationInDays(subscriptionPlanDTO.getDurationInDays())
+                .price(subscriptionPlanDTO.getPrice())
+                .currency(subscriptionPlanDTO.getCurrency())
+                .maxBooksAllowed(subscriptionPlanDTO.getMaxBooksAllowed())
+                .maxDaysPerBook(subscriptionPlanDTO.getMaxDaysPerBook())
+                .displayOrder(subscriptionPlanDTO.getDisplayOrder())
+                .active(subscriptionPlanDTO.getActive())
+                .isFeatured(subscriptionPlanDTO.getIsFeatured())
+                .badgeText(subscriptionPlanDTO.getBadgeText())
+                .adminNotes(subscriptionPlanDTO.getAdminNotes())
+                .build();
+    }
+
+    public SubscriptionPlan toEntityForUpdate(SubscriptionPlanDTO subscriptionPlanDTO) {
         if (subscriptionPlanDTO == null) {
             return null;
         }
@@ -66,25 +86,25 @@ public class SubscriptionPlanMapper {
                 .build();
     }
 
-    public static List<SubscriptionPlanDTO> toDTOList(List<SubscriptionPlan> subscriptionPlans) {
+    public List<SubscriptionPlanDTO> toDTOList(List<SubscriptionPlan> subscriptionPlans) {
         if (subscriptionPlans == null) {
             return null;
         }
         return subscriptionPlans.stream()
-                .map(SubscriptionPlanMapper::toDTO)
+                .map(this::toDTO)
                 .collect(Collectors.toList());
     }
 
-    public static List<SubscriptionPlan> toEntityList(List<SubscriptionPlanDTO> subscriptionPlanDTOs) {
+    public List<SubscriptionPlan> toEntityList(List<SubscriptionPlanDTO> subscriptionPlanDTOs) {
         if (subscriptionPlanDTOs == null) {
             return null;
         }
         return subscriptionPlanDTOs.stream()
-                .map(SubscriptionPlanMapper::toEntity)
+                .map(this::toEntity)
                 .collect(Collectors.toList());
     }
 
-    public static SubscriptionPlan updateEntityFromDTO(SubscriptionPlanDTO subscriptionPlanDTO, SubscriptionPlan subscriptionPlan) {
+    public SubscriptionPlan updateEntityFromDTO(SubscriptionPlanDTO subscriptionPlanDTO, SubscriptionPlan subscriptionPlan) {
         if (subscriptionPlanDTO == null || subscriptionPlan == null) {
             return subscriptionPlan;
         }

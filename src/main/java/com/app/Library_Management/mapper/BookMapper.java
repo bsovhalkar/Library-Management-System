@@ -6,12 +6,13 @@ import com.app.Library_Management.model.Book;
 import com.app.Library_Management.model.Genre;
 import com.app.Library_Management.payload.response.PageResponse;
 import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Component;
 import java.util.List;
 
+@Component
 public class BookMapper {
 
-    public static BookDTO toDTO(Book book) {
-
+    public BookDTO toDTO(Book book) {
         if (book == null) {
             return null;
         }
@@ -38,8 +39,31 @@ public class BookMapper {
                 .updatedDate(book.getUpdatedDate())
                 .build();
     }
-    public static Book toEntity(BookDTO dto, Genre genre){
 
+    public Book toEntity(BookDTO dto, Genre genre){
+        if (dto == null) {
+            return null;
+        }
+
+        return Book.builder()
+                .isbn(dto.getIsbn())
+                .title(dto.getTitle())
+                .author(dto.getAuthor())
+                .genre(genre)
+                .publisher(dto.getPublisher())
+                .publishedDate(dto.getPublishedDate())
+                .language(dto.getLanguage())
+                .numberOfPages(dto.getNumberOfPages())
+                .description(dto.getDescription())
+                .totalCopies(dto.getTotalCopies())
+                .availableCopies(dto.getAvailableCopies())
+                .coverImgUrl(dto.getCoverImgUrl())
+                .price(dto.getPrice())
+                .active(dto.getActive())
+                .build();
+    }
+
+    public Book toEntityForUpdate(BookDTO dto, Genre genre){
         if (dto == null) {
             return null;
         }
@@ -60,20 +84,22 @@ public class BookMapper {
                 .coverImgUrl(dto.getCoverImgUrl())
                 .price(dto.getPrice())
                 .active(dto.getActive())
+                .createdDate(dto.getCreatedDate())
+                .updatedDate(dto.getUpdatedDate())
                 .build();
     }
-    public static List<BookDTO> toDTOList(List<Book> books) {
 
+    public List<BookDTO> toDTOList(List<Book> books) {
         if (books == null) {
             return List.of();
         }
 
         return books.stream()
-                .map(BookMapper::toDTO)
+                .map(this::toDTO)
                 .toList();
     }
-    public static void updateEntityFromDTO(BookDTO dto, Book book, Genre genre) {
 
+    public void updateEntityFromDTO(BookDTO dto, Book book, Genre genre) {
         if (dto == null || book == null) {
             return;
         }

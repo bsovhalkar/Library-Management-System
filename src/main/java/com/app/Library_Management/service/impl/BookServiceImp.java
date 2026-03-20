@@ -28,6 +28,8 @@ import java.util.Optional;
 public class BookServiceImp implements BookService {
     private final BookRepository bookRepository;
     private final GenreRepository genreRepository;
+    private final BookMapper bookMapper;
+    
     @Override
     public BookDTO createBook(BookDTO bookDTO) throws BookAlreadyExistException,GenreNotFoundException {
         if(bookDTO == null) return null;
@@ -38,10 +40,10 @@ public class BookServiceImp implements BookService {
                     .orElseThrow(() ->
                             new GenreNotFoundException("Genre with ID " + bookDTO.getGenreId() + " not found"));
         }
-        Book book = BookMapper.toEntity(bookDTO, genre);
+        Book book = bookMapper.toEntity(bookDTO, genre);
         book.isAvailableCopiesValid();
         book = bookRepository.save(book);
-        return BookMapper.toDTO(book);
+        return bookMapper.toDTO(book);
     }
 
     @Override
@@ -57,13 +59,13 @@ public class BookServiceImp implements BookService {
     @Override
     public BookDTO getBookById(Long bookId) throws BookNotFoundException {
         Book book = bookRepository.findById(bookId).orElseThrow(()-> new BookNotFoundException("Book with ID " + bookId + " not found"));
-        return BookMapper.toDTO(book);
+        return bookMapper.toDTO(book);
     }
 
     @Override
     public BookDTO getBookByISBN(String isbn) throws BookNotFoundException {
         Book book = bookRepository.findBookByIsbn(isbn).orElseThrow(()-> new BookNotFoundException("Book with ISBN " + isbn + " not found"));
-        return BookMapper.toDTO(book);
+        return bookMapper.toDTO(book);
     }
 
     @Override
@@ -76,10 +78,10 @@ public class BookServiceImp implements BookService {
                             new GenreNotFoundException("Genre with ID " + bookDTO.getGenreId() + " not found"));
         }
 
-        BookMapper.updateEntityFromDTO(bookDTO,bookTuBeUpdated,genre);
+        bookMapper.updateEntityFromDTO(bookDTO,bookTuBeUpdated,genre);
         bookTuBeUpdated.isAvailableCopiesValid();
         bookTuBeUpdated = bookRepository.save(bookTuBeUpdated);
-        return BookMapper.toDTO(bookTuBeUpdated);
+        return bookMapper.toDTO(bookTuBeUpdated);
     }
 
     @Override
@@ -99,7 +101,7 @@ public class BookServiceImp implements BookService {
     @Override
     public List<BookDTO> getAllBooks() {
         List<Book> res = bookRepository.findAll();
-        return BookMapper.toDTOList(res);
+        return bookMapper.toDTOList(res);
     }
 
     @Override
@@ -131,7 +133,7 @@ public class BookServiceImp implements BookService {
 
         List<BookDTO> content = bookPage.getContent()
                 .stream()
-                .map(BookMapper::toDTO)
+                .map(bookMapper::toDTO)
                 .toList();
 
         return PageResponse.<BookDTO>builder()

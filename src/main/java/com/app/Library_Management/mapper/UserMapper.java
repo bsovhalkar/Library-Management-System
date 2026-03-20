@@ -3,24 +3,16 @@ package com.app.Library_Management.mapper;
 import com.app.Library_Management.domain.UserRole;
 import com.app.Library_Management.model.User;
 import com.app.Library_Management.payload.dto.UserDTO;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Mapper for converting between User entity and UserDTO
- * Provides bidirectional mapping for API requests/responses
- */
-@Service
+
+@Component
 public class UserMapper {
 
-    /**
-     * Converts User entity to UserDTO
-     * @param user the User entity
-     * @return UserDTO with all relevant fields mapped
-     */
-    public static UserDTO toDTO(User user) {
+    public UserDTO toDTO(User user) {
         if (user == null) {
             return null;
         }
@@ -32,19 +24,28 @@ public class UserMapper {
                 user.getPhoneNumber(),
                 user.getFullName(),
                 user.getRole(),
-                user.getEmail(), // username same as email
+                user.getEmail(),
                 user.getLastLogin(),
                 user.getCreatedAt(),
                 user.getUpdatedAt()
         );
     }
 
-    /**
-     * Converts UserDTO to User entity
-     * @param userDTO the UserDTO object
-     * @return User entity with all relevant fields mapped
-     */
-    public static User toEntity(UserDTO userDTO) {
+    public User toEntity(UserDTO userDTO) {
+        if (userDTO == null) {
+            return null;
+        }
+
+        return User.builder()
+                .email(userDTO.getEmail())
+                .password(userDTO.getPassword())
+                .phoneNumber(userDTO.getPhoneNumber())
+                .fullName(userDTO.getFullName())
+                .role(String.valueOf(UserRole.ROLE_USER))
+                .build();
+    }
+
+    public User toEntityForUpdate(UserDTO userDTO) {
         if (userDTO == null) {
             return null;
         }
@@ -62,28 +63,17 @@ public class UserMapper {
                 .build();
     }
 
-    /**
-     * Converts User entity to UserDTO excluding password (safe for API responses)
-     * @param user the User entity
-     * @return UserDTO without password field
-     */
-    public static UserDTO toDTOWithoutPassword(User user) {
+    public UserDTO toDTOWithoutPassword(User user) {
         if (user == null) {
             return null;
         }
 
         UserDTO dto = toDTO(user);
-        dto.setPassword(null); // Exclude password from response
+        dto.setPassword(null);
         return dto;
     }
 
-    /**
-     * Updates an existing User entity with data from UserDTO
-     * @param userDTO the source UserDTO
-     * @param user the target User entity to update
-     * @return the updated User entity
-     */
-    public static User updateEntityFromDTO(UserDTO userDTO, User user) {
+    public User updateEntityFromDTO(UserDTO userDTO, User user) {
         if (userDTO == null || user == null) {
             return user;
         }
@@ -107,12 +97,12 @@ public class UserMapper {
         return user;
     }
 
-    public static List<UserDTO> toDTOList(List<User> users) {
+    public List<UserDTO> toDTOList(List<User> users) {
         if (users == null) {
             return null;
         }
         return users.stream()
-                .map(UserMapper::toDTOWithoutPassword)
+                .map(this::toDTOWithoutPassword)
                 .collect(Collectors.toList());
     }
 }

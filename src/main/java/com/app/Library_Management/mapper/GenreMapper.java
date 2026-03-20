@@ -2,10 +2,12 @@ package com.app.Library_Management.mapper;
 
 import com.app.Library_Management.model.Genre;
 import com.app.Library_Management.payload.dto.GenreDTO;
+import org.springframework.stereotype.Component;
 
+@Component
 public class GenreMapper {
 
-    public static GenreDTO toGenreDTO(Genre genre) {
+    public GenreDTO toGenreDTO(Genre genre) {
         if (genre == null) return null;
 
         GenreDTO dto = new GenreDTO();
@@ -46,7 +48,26 @@ public class GenreMapper {
         return dto;
     }
 
-    public static Genre toGenreEntity(GenreDTO dto) {
+    public Genre toGenreEntity(GenreDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+
+        Genre genre = new Genre();
+        genre.setCode(dto.getCode());
+        genre.setName(dto.getName());
+        genre.setDescription(dto.getDescription());
+        genre.setDisplayOrder(dto.getDisplayOrder());
+        genre.setActive(dto.getActive());
+        genre.setCreationAt(dto.getCreationAt());
+        genre.setUpdateAt(dto.getUpdateAt());
+        return genre;
+    }
+
+    public Genre toGenreEntityForUpdate(GenreDTO dto) {
+        if (dto == null) {
+            return null;
+        }
 
         Genre genre = new Genre();
 
@@ -61,7 +82,7 @@ public class GenreMapper {
         return genre;
     }
 
-    public static Genre updateEntityFromDTO(GenreDTO dto, Genre genre){
+    public Genre updateEntityFromDTO(GenreDTO dto, Genre genre){
         if(genre == null || dto == null) {
             return null;
         }

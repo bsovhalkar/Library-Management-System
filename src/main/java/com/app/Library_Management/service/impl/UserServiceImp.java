@@ -18,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserServiceImp implements UserService {
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     @Override
     public User getCurrentUser() throws UserNotFoundException {
@@ -32,7 +33,7 @@ public class UserServiceImp implements UserService {
     @Override
     public List<UserDTO> getAllUsers() {
         List<User> users = userRepository.findAll();
-        List<UserDTO> userDTOs = UserMapper.toDTOList(users);
+        List<UserDTO> userDTOs = userMapper.toDTOList(users);
         return userDTOs;
     }
 }

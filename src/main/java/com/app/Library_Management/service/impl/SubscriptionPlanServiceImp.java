@@ -18,31 +18,34 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class SubscriptionPlanServiceImp implements SubscriptionPlanService {
-    private  final SubscriptionPlanRepository subscriptionPlanRepository;
-    public final UserService userService;
+    private final SubscriptionPlanRepository subscriptionPlanRepository;
+    private final UserService userService;
+    private final SubscriptionPlanMapper subscriptionPlanMapper;
+    
     @Override
     public SubscriptionPlanDTO createSubscriptionPlan(SubscriptionPlanDTO subscriptionPlanDTO) throws PlanCodeAlreadyExist, UserNotFoundException {
         if(subscriptionPlanRepository.existsByPlanCode(subscriptionPlanDTO.getPlanCode())) {
             throw new PlanCodeAlreadyExist(subscriptionPlanDTO.getPlanCode());
         }
-        SubscriptionPlan subscriptionPlan = SubscriptionPlanMapper.toEntity(subscriptionPlanDTO);
+        SubscriptionPlan subscriptionPlan = subscriptionPlanMapper.toEntity(subscriptionPlanDTO);
         User user = userService.getCurrentUser();
         subscriptionPlan.setCreatedBy(user.getFullName());
         subscriptionPlan.setUpdatedBy(user.getFullName());
 
         SubscriptionPlan savedPlan = subscriptionPlanRepository.save(subscriptionPlan);
-        return SubscriptionPlanMapper.toDTO(savedPlan);
+        return subscriptionPlanMapper.toDTO(savedPlan);
     }
 
     @Override
     public SubscriptionPlanDTO updateSubscriptionPlan(Long planId, SubscriptionPlanDTO subscriptionPlanDTO) throws PlanNotFound, UserNotFoundException {
         SubscriptionPlan existingPlan = subscriptionPlanRepository.findById(planId)
                 .orElseThrow(() -> new PlanNotFound(planId));
-        SubscriptionPlan updatedPlan = SubscriptionPlanMapper.updateEntityFromDTO(subscriptionPlanDTO, existingPlan);
+        subscriptionPlanDTO.setId(planId);
+        SubscriptionPlan updatedPlan = subscriptionPlanMapper.updateEntityFromDTO(subscriptionPlanDTO, existingPlan);
         User user = userService.getCurrentUser();
         updatedPlan.setUpdatedBy(user.getFullName());
         SubscriptionPlan savedPlan = subscriptionPlanRepository.save(updatedPlan);
-        return SubscriptionPlanMapper.toDTO(savedPlan);
+        return subscriptionPlanMapper.toDTO(savedPlan);
     }
 
     @Override
@@ -55,13 +58,13 @@ public class SubscriptionPlanServiceImp implements SubscriptionPlanService {
     @Override
     public List<SubscriptionPlanDTO> getAllSubscriptionPlan() {
         List<SubscriptionPlan> subscriptionPlans = subscriptionPlanRepository.findAll();
-        return SubscriptionPlanMapper.toDTOList(subscriptionPlans);
+        return subscriptionPlanMapper.toDTOList(subscriptionPlans);
     }
 
     @Override
     public SubscriptionPlanDTO getSubscriptionPlanById(Long planId) throws PlanNotFound {
         SubscriptionPlan subscriptionPlan = subscriptionPlanRepository.findById(planId)
                 .orElseThrow(() -> new PlanNotFound(planId));
-        return SubscriptionPlanMapper.toDTO(subscriptionPlan);
+        return subscriptionPlanMapper.toDTO(subscriptionPlan);
     }
 }
