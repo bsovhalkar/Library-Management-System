@@ -24,9 +24,10 @@ public class GlobalException {
     }
 
     @ExceptionHandler(ParentAndChildCantBeSame.class)
-    public ResponseEntity<ApiResponse>  handleParentAndChildCantBeSame(ParentAndChildCantBeSame e) {
+    public ResponseEntity<ApiResponse> handleParentAndChildCantBeSame(ParentAndChildCantBeSame e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(e.getMessage(), false));
     }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidation(
             MethodArgumentNotValidException ex) {
@@ -45,32 +46,39 @@ public class GlobalException {
     public ResponseEntity<ApiResponse> handleBookNotFound(BookNotFoundException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(e.getMessage(), false));
     }
+
     @ExceptionHandler(BookAlreadyExistException.class)
     public ResponseEntity<ApiResponse> handleBookAlreadyExist(BookAlreadyExistException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(e.getMessage(), false));
     }
+
     @ExceptionHandler(UserAlreadyExistException.class)
     public ResponseEntity<ApiResponse> handleUserAlreadyExist(UserAlreadyExistException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(e.getMessage(), false));
     }
+
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ApiResponse> handleUserNotFound(UserNotFoundException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(e.getMessage(), false));
     }
+
     @ExceptionHandler(PasswordDoesNotMatchExp.class)
     public ResponseEntity<ApiResponse> handlePasswordDoesNotMatchExp(PasswordDoesNotMatchExp e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(e.getMessage(), false));
     }
+
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ApiResponse> handleBadCredentialsException(BadCredentialsException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse("Bad Credentials or Login Expired !", false));
     }
-    @ExceptionHandler(PlanCodeAlreadyExist.class)
-    public ResponseEntity<ApiResponse> handlePlanCodeAlreadyExist(PlanCodeAlreadyExist e) {
+
+    @ExceptionHandler(SubscriptionException.class)
+    public ResponseEntity<ApiResponse> handleSubscriptionException(SubscriptionException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(e.getMessage(), false));
     }
-    @ExceptionHandler(PlanNotFound.class)
-    public ResponseEntity<ApiResponse> handlePlanNotFound(PlanNotFound e) {
+
+    @ExceptionHandler(PaymentIdInvalid.class)
+    public ResponseEntity<ApiResponse> handlePaymentIdInvalid(PaymentIdInvalid e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(e.getMessage(), false));
     }
 }

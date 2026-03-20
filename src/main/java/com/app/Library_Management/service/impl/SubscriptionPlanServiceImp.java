@@ -1,7 +1,6 @@
 package com.app.Library_Management.service.impl;
 
-import com.app.Library_Management.exception.PlanCodeAlreadyExist;
-import com.app.Library_Management.exception.PlanNotFound;
+import com.app.Library_Management.exception.SubscriptionException;
 import com.app.Library_Management.exception.UserNotFoundException;
 import com.app.Library_Management.mapper.SubscriptionPlanMapper;
 import com.app.Library_Management.model.SubscriptionPlan;
@@ -23,9 +22,9 @@ public class SubscriptionPlanServiceImp implements SubscriptionPlanService {
     private final SubscriptionPlanMapper subscriptionPlanMapper;
     
     @Override
-    public SubscriptionPlanDTO createSubscriptionPlan(SubscriptionPlanDTO subscriptionPlanDTO) throws PlanCodeAlreadyExist, UserNotFoundException {
+    public SubscriptionPlanDTO createSubscriptionPlan(SubscriptionPlanDTO subscriptionPlanDTO) throws SubscriptionException, UserNotFoundException {
         if(subscriptionPlanRepository.existsByPlanCode(subscriptionPlanDTO.getPlanCode())) {
-            throw new PlanCodeAlreadyExist(subscriptionPlanDTO.getPlanCode());
+            throw new SubscriptionException("Plan code already exist: " + subscriptionPlanDTO.getPlanCode());
         }
         SubscriptionPlan subscriptionPlan = subscriptionPlanMapper.toEntity(subscriptionPlanDTO);
         User user = userService.getCurrentUser();
@@ -37,21 +36,19 @@ public class SubscriptionPlanServiceImp implements SubscriptionPlanService {
     }
 
     @Override
-    public SubscriptionPlanDTO updateSubscriptionPlan(Long planId, SubscriptionPlanDTO subscriptionPlanDTO) throws PlanNotFound, UserNotFoundException {
+    public SubscriptionPlanDTO updateSubscriptionPlan(Long planId, SubscriptionPlanDTO subscriptionPlanDTO) throws SubscriptionException, UserNotFoundException {
         SubscriptionPlan existingPlan = subscriptionPlanRepository.findById(planId)
-                .orElseThrow(() -> new PlanNotFound(planId));
+                .orElseThrow(() -> new SubscriptionException("Plan with id " + planId + " not found"));
         subscriptionPlanDTO.setId(planId);
         SubscriptionPlan updatedPlan = subscriptionPlanMapper.updateEntityFromDTO(subscriptionPlanDTO, existingPlan);
         User user = userService.getCurrentUser();
         updatedPlan.setUpdatedBy(user.getFullName());
         SubscriptionPlan savedPlan = subscriptionPlanRepository.save(updatedPlan);
         return subscriptionPlanMapper.toDTO(savedPlan);
-    }
-
-    @Override
-    public void deleteSubscriptionPlan(Long planId) throws PlanNotFound {
+    }    @Override
+    public void deleteSubscriptionPlan(Long planId) throws SubscriptionException {
         SubscriptionPlan subscriptionPlan = subscriptionPlanRepository.findById(planId)
-                .orElseThrow(() -> new PlanNotFound(planId));
+                .orElseThrow(() -> new SubscriptionException("Plan with id " + planId + " not found"));
         subscriptionPlanRepository.delete(subscriptionPlan);
     }
 
@@ -62,9 +59,9 @@ public class SubscriptionPlanServiceImp implements SubscriptionPlanService {
     }
 
     @Override
-    public SubscriptionPlanDTO getSubscriptionPlanById(Long planId) throws PlanNotFound {
+    public SubscriptionPlanDTO getSubscriptionPlanById(Long planId) throws SubscriptionException {
         SubscriptionPlan subscriptionPlan = subscriptionPlanRepository.findById(planId)
-                .orElseThrow(() -> new PlanNotFound(planId));
+                .orElseThrow(() -> new SubscriptionException("Plan with id " + planId + " not found"));
         return subscriptionPlanMapper.toDTO(subscriptionPlan);
     }
 }

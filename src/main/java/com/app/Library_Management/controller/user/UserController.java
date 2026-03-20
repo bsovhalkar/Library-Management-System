@@ -1,6 +1,7 @@
 package com.app.Library_Management.controller.user;
 
 import com.app.Library_Management.exception.UserNotFoundException;
+import com.app.Library_Management.mapper.UserMapper;
 import com.app.Library_Management.model.User;
 import com.app.Library_Management.payload.dto.UserDTO;
 import com.app.Library_Management.service.UserService;
@@ -17,18 +18,19 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
 public class UserController {
+    private final UserMapper userMapper;
     private final UserService userService;
 
     @GetMapping("/profile")
-    public ResponseEntity<User> getMe() throws UserNotFoundException {
+    public ResponseEntity<UserDTO> getMe() throws UserNotFoundException {
        User user = userService.getCurrentUser();
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(userMapper.toDTOWithoutPassword(user));
     }
 
-    @GetMapping("/list")
-    public ResponseEntity<List<UserDTO>> getAllUsers(){
-        List<UserDTO> userDTOs = userService.getAllUsers();
-        return new ResponseEntity<>(userDTOs, HttpStatus.OK);
-    }
+//    @GetMapping("/list")
+//    public ResponseEntity<List<UserDTO>> getAllUsers(){
+//        List<UserDTO> userDTOs = userService.getAllUsers();
+//        return new ResponseEntity<>(userDTOs, HttpStatus.OK);
+//    }
 }
 

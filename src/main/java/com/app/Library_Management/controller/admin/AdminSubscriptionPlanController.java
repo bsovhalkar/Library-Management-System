@@ -1,7 +1,6 @@
 package com.app.Library_Management.controller.admin;
 
-import com.app.Library_Management.exception.PlanCodeAlreadyExist;
-import com.app.Library_Management.exception.PlanNotFound;
+import com.app.Library_Management.exception.SubscriptionException;
 import com.app.Library_Management.exception.UserNotFoundException;
 import com.app.Library_Management.payload.dto.SubscriptionPlanDTO;
 import com.app.Library_Management.payload.response.ApiResponse;
@@ -26,19 +25,19 @@ public class AdminSubscriptionPlanController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<SubscriptionPlanDTO> createSubscriptionPlan(@Valid @RequestBody SubscriptionPlanDTO subscriptionPlanDTO) throws UserNotFoundException, PlanCodeAlreadyExist {
+    public ResponseEntity<SubscriptionPlanDTO> createSubscriptionPlan(@Valid @RequestBody SubscriptionPlanDTO subscriptionPlanDTO) throws UserNotFoundException, SubscriptionException {
         SubscriptionPlanDTO createdPlan = subscriptionPlanService.createSubscriptionPlan(subscriptionPlanDTO);
         return ResponseEntity.ok(createdPlan);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<SubscriptionPlanDTO> updateSubscriptionPlan(@PathVariable Long id, @RequestBody SubscriptionPlanDTO subscriptionPlanDTO) throws UserNotFoundException, PlanNotFound {
+    public ResponseEntity<SubscriptionPlanDTO> updateSubscriptionPlan(@PathVariable Long id, @RequestBody SubscriptionPlanDTO subscriptionPlanDTO) throws UserNotFoundException, SubscriptionException {
         SubscriptionPlanDTO updatedPlan = subscriptionPlanService.updateSubscriptionPlan(id, subscriptionPlanDTO);
         return ResponseEntity.ok(updatedPlan);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<ApiResponse> deleteSubscriptionPlan(@PathVariable Long id) throws PlanNotFound {
+    public ResponseEntity<ApiResponse> deleteSubscriptionPlan(@PathVariable Long id) throws SubscriptionException {
         subscriptionPlanService.deleteSubscriptionPlan(id);
         return ResponseEntity.ok(new ApiResponse ("Delete subscription plan successfully!",true));
     }

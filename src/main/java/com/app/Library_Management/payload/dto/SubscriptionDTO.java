@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 public class SubscriptionDTO {
     private Long id;
 
-    @NotNull(message = "Subscriber ID is required")
     private Long subscriberId;
 
     @NotNull(message = "Subscription plan ID is required")
@@ -23,35 +22,27 @@ public class SubscriptionDTO {
 
     private String planName;
 
-    @NotBlank(message = "Plan code is required")
     private String planCode;
 
     private String planDescription;
 
-    @NotNull(message = "Price is required")
-    @Positive(message = "Price must be positive")
     private Long price;
 
-    @NotNull(message = "Max books allowed is required")
-    @Positive(message = "Max books allowed must be positive")
     private Integer maxBooksAllowed;
 
-    @NotNull(message = "Max days per book is required")
-    @Positive(message = "Max days per book must be positive")
+
     private Integer maxDaysPerBook;
 
     private Integer maxBooksPerDay;
 
-    @NotNull(message = "Start time is required")
+
     private LocalDateTime startTime;
 
-    @NotNull(message = "End time is required")
     private LocalDateTime endTime;
 
-    @NotNull(message = "Active status is required")
     private Boolean isActive;
 
-    private Boolean autoReview;
+    private Boolean autoRenew;
 
     private LocalDateTime cancelTime;
 
@@ -60,5 +51,12 @@ public class SubscriptionDTO {
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;
+
+    // Calculated fields
+    private Long daysRemaining;
+
+    private Boolean isValid;
+
+    private Boolean isExpired;
 }
 

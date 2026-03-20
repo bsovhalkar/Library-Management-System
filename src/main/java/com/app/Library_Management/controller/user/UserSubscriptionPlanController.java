@@ -1,6 +1,6 @@
 package com.app.Library_Management.controller.user;
 
-import com.app.Library_Management.exception.PlanNotFound;
+import com.app.Library_Management.exception.SubscriptionException;
 import com.app.Library_Management.payload.dto.SubscriptionPlanDTO;
 import com.app.Library_Management.service.SubscriptionPlanService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class UserSubscriptionPlanController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SubscriptionPlanDTO> getSubscriptionPlanById(@PathVariable Long id) throws PlanNotFound {
+    public ResponseEntity<SubscriptionPlanDTO> getSubscriptionPlanById(@PathVariable Long id) throws SubscriptionException {
         SubscriptionPlanDTO plan = subscriptionPlanService.getSubscriptionPlanById(id);
         return ResponseEntity.ok(plan);
     }

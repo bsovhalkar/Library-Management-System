@@ -39,14 +39,12 @@ public class Subscription {
     private Integer maxDaysPerBook;
     private Integer maxBooksPerDay;
 
-    @Column(nullable = false)
     private LocalDateTime startTime;
-    @Column(nullable = false)
     private LocalDateTime endTime;
     @Column(nullable = false)
     private Boolean isActive = true;
 
-    private Boolean autoReview;
+    private Boolean autoRenew;
     private LocalDateTime cancelTime;
 
     private String cancelReason;
@@ -60,25 +58,30 @@ public class Subscription {
 
 
     public Boolean isActive() {
-        if (!isActive) {
+        if (!isActive || startTime == null || endTime == null) {
             return false;
         }
         LocalDateTime now = LocalDateTime.now();
         return now.isAfter(startTime) && now.isBefore(endTime);
     }
+
     public Boolean isExpired() {
+        if (endTime == null) {
+            return false;
+        }
         LocalDateTime now = LocalDateTime.now();
         return now.isAfter(endTime);
     }
+
     public Long getRemainingDays() {
-        if(isExpired()) {
+        if (isExpired() || startTime == null || endTime == null) {
             return 0L;
         }
         LocalDateTime now = LocalDateTime.now();
-        return Duration.between(startTime, now).toDays();
+        return Duration.between(now, endTime).toDays();
     }
 
-    private void calculatePlanEndTime() {
+    public void calculatePlanEndTime() {
         if (subscriptionPlan != null && startTime != null) {
             this.endTime = startTime.plusDays(subscriptionPlan.getDurationInDays());
         }
@@ -92,12 +95,7 @@ public class Subscription {
             this.maxBooksAllowed = subscriptionPlan.getMaxBooksAllowed();
             this.maxDaysPerBook = subscriptionPlan.getMaxDaysPerBook();
             this.planDescription = subscriptionPlan.getPlanDescription();
-            if(startTime == null) {
-                this.startTime = LocalDateTime.now();
-            }
-            if(endTime == null) {
-                calculatePlanEndTime();
-            }
+
         }
     }
 }
