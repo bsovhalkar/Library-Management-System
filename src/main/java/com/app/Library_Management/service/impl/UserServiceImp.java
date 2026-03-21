@@ -36,4 +36,17 @@ public class UserServiceImp implements UserService {
         List<UserDTO> userDTOs = userMapper.toDTOList(users);
         return userDTOs;
     }
+
+    @Override
+    public User getUserById(Long id) throws UserNotFoundException {
+        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
+        return user;
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+
+        return null;
+    }
+
 }

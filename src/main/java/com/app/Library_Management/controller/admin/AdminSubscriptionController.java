@@ -1,7 +1,6 @@
 package com.app.Library_Management.controller.admin;
 
 import com.app.Library_Management.exception.SubscriptionException;
-import com.app.Library_Management.exception.PaymentIdInvalid;
 import com.app.Library_Management.exception.UserNotFoundException;
 import com.app.Library_Management.payload.dto.SubscriptionDTO;
 import com.app.Library_Management.payload.response.ApiResponse;
@@ -36,9 +35,8 @@ public class AdminSubscriptionController {
 
     @PostMapping("/{id}/activate")
     public ResponseEntity<SubscriptionDTO> activateSubscription(
-            @PathVariable Long id,
-            @RequestParam Long paymentId) throws SubscriptionException, UserNotFoundException, PaymentIdInvalid {
-        SubscriptionDTO subscription = subscriptionService.activateSubscription(id, paymentId);
+            @PathVariable Long id) throws SubscriptionException, UserNotFoundException {
+        SubscriptionDTO subscription = subscriptionService.activateSubscription(id);
         return ResponseEntity.ok(subscription);
     }
 

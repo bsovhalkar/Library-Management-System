@@ -42,7 +42,7 @@ public class Subscription {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     @Column(nullable = false)
-    private Boolean isActive = true;
+    private Boolean isActive = false;
 
     private Boolean autoRenew;
     private LocalDateTime cancelTime;

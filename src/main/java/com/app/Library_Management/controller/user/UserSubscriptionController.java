@@ -1,7 +1,6 @@
 package com.app.Library_Management.controller.user;
 
 import com.app.Library_Management.exception.SubscriptionException;
-import com.app.Library_Management.exception.PaymentIdInvalid;
 import com.app.Library_Management.exception.UserNotFoundException;
 import com.app.Library_Management.payload.dto.SubscriptionDTO;
 import com.app.Library_Management.payload.response.ApiResponse;
@@ -40,7 +39,12 @@ public class UserSubscriptionController {
         return ResponseEntity.ok(subscription);
     }
 
-
+    @PostMapping("/{id}/activate")
+    public ResponseEntity<SubscriptionDTO> activateSubscription(
+            @PathVariable Long id) throws SubscriptionException, UserNotFoundException {
+        SubscriptionDTO subscription = subscriptionService.activateSubscription(id);
+        return ResponseEntity.ok(subscription);
+    }
 
     @PostMapping("/{id}/cancel")
     public ResponseEntity<SubscriptionDTO> cancelSubscription(
@@ -50,12 +54,7 @@ public class UserSubscriptionController {
         return ResponseEntity.ok(subscription);
     }
 
-    @PostMapping("/{id}/activate")
-    public ResponseEntity<SubscriptionDTO> activateSubscription(
-            @PathVariable Long id,
-            @RequestParam Long paymentId) throws SubscriptionException, UserNotFoundException, PaymentIdInvalid, PaymentIdInvalid {
-        SubscriptionDTO subscription = subscriptionService.activateSubscription(id, paymentId);
-        return ResponseEntity.ok(subscription);
-    }
+
+
 }
 

@@ -9,5 +9,7 @@ import java.util.List;
 public interface UserService {
     User getCurrentUser() throws UserNotFoundException;
     List<UserDTO> getAllUsers();
+    User getUserById(Long id) throws UserNotFoundException;
+    User getUserByEmail(String email);
 
 }

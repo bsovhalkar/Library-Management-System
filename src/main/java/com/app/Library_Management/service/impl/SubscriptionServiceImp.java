@@ -3,7 +3,6 @@ package com.app.Library_Management.service.impl;
 import com.app.Library_Management.exception.SubscriptionException;
 import com.app.Library_Management.exception.UserNotFoundException;
 import com.app.Library_Management.mapper.SubscriptionMapper;
-import com.app.Library_Management.exception.PaymentIdInvalid;
 import com.app.Library_Management.model.Subscription;
 import com.app.Library_Management.model.SubscriptionPlan;
 import com.app.Library_Management.model.User;
@@ -72,7 +71,7 @@ public class SubscriptionServiceImp implements SubscriptionService {
     }
 
     @Override
-    public SubscriptionDTO activateSubscription(Long subscriptionId, Long paymentId) throws SubscriptionException, UserNotFoundException, PaymentIdInvalid {
+    public SubscriptionDTO activateSubscription(Long subscriptionId) throws SubscriptionException, UserNotFoundException {
         Subscription subscription = subscriptionRepository.findById(subscriptionId)
                 .orElseThrow(() -> new SubscriptionException("Subscription with id " + subscriptionId + " not found"));
         
@@ -106,6 +105,16 @@ public class SubscriptionServiceImp implements SubscriptionService {
             subscription.setIsActive(false);
             subscriptionRepository.save(subscription);
         }
+    }
+
+    @Override
+    public SubscriptionDTO getUsersActiveSubscriptions(Long id) throws UserNotFoundException, SubscriptionException {
+        User currentUser = userService.getUserById(id);
+        List<Subscription> subscriptions = subscriptionRepository.findActiveSubscriptionsByUserIdAndCurrentDate(currentUser.getId(), LocalDateTime.now());
+        if (subscriptions.isEmpty()) {
+            throw new SubscriptionException("No active subscriptions found for user id: " + currentUser.getId());
+        }
+        return subscriptionMapper.toDTO(subscriptions.get(0));
     }
 
 }

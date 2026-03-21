@@ -76,9 +76,17 @@ public class GlobalException {
     public ResponseEntity<ApiResponse> handleSubscriptionException(SubscriptionException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(e.getMessage(), false));
     }
-
-    @ExceptionHandler(PaymentIdInvalid.class)
-    public ResponseEntity<ApiResponse> handlePaymentIdInvalid(PaymentIdInvalid e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(e.getMessage(), false));
+//    @ExceptionHandler(RuntimeException.class)
+//    public ResponseEntity<ApiResponse> handleRuntimeException(RuntimeException e) {
+//        return ResponseEntity
+//                .status(HttpStatus.BAD_REQUEST)
+//                .body(new ApiResponse("Something went wrong", false));
+//    }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiResponse> handleGenericException(Exception e) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ApiResponse(e.getMessage(), false));
     }
+
 }

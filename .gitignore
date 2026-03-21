@@ -76,6 +76,22 @@ dependency-reduced-pom.xml
 ### LocalStack ###
 docker-compose.override.yml
 
+### Payment Related Files ###
+src/main/java/com/app/Library_Management/model/Payment.java
+src/main/java/com/app/Library_Management/payload/dto/PaymentDTO.java
+src/main/java/com/app/Library_Management/mapper/PaymentMapper.java
+src/main/java/com/app/Library_Management/domain/PaymentStatus.java
+src/main/java/com/app/Library_Management/domain/PaymentGateWay.java
+src/main/java/com/app/Library_Management/domain/PaymentType.java
+src/main/java/com/app/Library_Management/controller/admin/*Payment*
+src/main/java/com/app/Library_Management/service/*Payment*
+src/main/java/com/app/Library_Management/repository/*Payment*
+src/main/java/com/app/Library_Management/exception/*Payment*
+target/classes/com/app/Library_Management/model/Payment*
+target/classes/com/app/Library_Management/payload/dto/Payment*
+target/classes/com/app/Library_Management/mapper/Payment*
+target/classes/com/app/Library_Management/domain/Payment*
+
 ### System files ###
 .classpath
 .project
