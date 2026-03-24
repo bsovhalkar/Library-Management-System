@@ -49,7 +49,7 @@ public class SubscriptionMapper {
         dto.setDaysRemaining(subscription.getRemainingDays());
         dto.setIsValid(subscription.isActive());
         dto.setIsExpired(subscription.isExpired());
-        
+
         return dto;
     }
 

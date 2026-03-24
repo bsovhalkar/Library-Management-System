@@ -1,16 +1,14 @@
 package com.app.Library_Management.payload.request;
 
 import com.app.Library_Management.domain.BookLoanStatus;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class BookLoanSearchRequest {
     private Long userId;
     private Long bookId;

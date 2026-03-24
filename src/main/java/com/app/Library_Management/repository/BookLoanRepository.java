@@ -2,7 +2,7 @@ package com.app.Library_Management.repository;
 
 import com.app.Library_Management.domain.BookLoanStatus;
 import com.app.Library_Management.model.BookLoan;
-import com.app.Library_Management.model.User;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -59,6 +59,8 @@ public interface BookLoanRepository extends JpaRepository<BookLoan,Long>, JpaSpe
 
     @Query("SELECT bl FROM BookLoan bl WHERE bl.checkoutDate >= :startDate AND bl.checkoutDate <= :endDate")
     Page<BookLoan> findBookLoansByDateRange(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate, Pageable pageable);
+
+    boolean existsByUserIdAndBookIdAndBookLoanStatus(Long userId, @NotNull(message = "Book id is required") Long bookId, BookLoanStatus bookLoanStatus);
 }
 
 

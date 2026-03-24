@@ -20,7 +20,6 @@ public class SubscriptionPlanServiceImp implements SubscriptionPlanService {
     private final SubscriptionPlanRepository subscriptionPlanRepository;
     private final UserService userService;
     private final SubscriptionPlanMapper subscriptionPlanMapper;
-    
     @Override
     public SubscriptionPlanDTO createSubscriptionPlan(SubscriptionPlanDTO subscriptionPlanDTO) throws SubscriptionException, UserNotFoundException {
         if(subscriptionPlanRepository.existsByPlanCode(subscriptionPlanDTO.getPlanCode())) {
