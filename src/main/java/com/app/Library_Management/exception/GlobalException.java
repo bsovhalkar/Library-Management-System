@@ -98,4 +98,8 @@ public class GlobalException {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(e.getMessage(), false));
     }
 
+    @ExceptionHandler(WishlistException.class)
+    public ResponseEntity<ApiResponse> handleWishlistException(WishlistException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(e.getMessage(), false));
+    }
 }
